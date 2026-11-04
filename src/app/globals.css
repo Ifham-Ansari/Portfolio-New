@@ -1,0 +1,17 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap");
+
+:root { --background: #09090f; --foreground: #f1f1fa; --accent: #b9dfff; --violet: #b296ff; --muted: #b3b6d0; --line: #2c2b40; --font-mono: "DM Mono", Consolas, monospace; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 120px; color-scheme: dark; }
+@media (max-width:800px) { html { scroll-padding-top: 100px; } }
+body { color: var(--foreground); background: var(--background); font-family: Manrope, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; cursor: pointer; }
+button, summary { font: inherit; cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .45; }
+button, a, summary { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+::selection { color: #0c0b10; background: var(--accent); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+[data-reveal][data-visible="true"] { animation: content-reveal .9s var(--reveal-delay, 0s) cubic-bezier(.16,1,.3,1) both; }
+@keyframes content-reveal { from { opacity: 0; transform: translateY(44px); clip-path: inset(10% 0 0 0); } to { opacity: 1; transform: none; clip-path: inset(0); } }
+@media(prefers-reduced-motion:reduce) { [data-reveal] { animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; } }
