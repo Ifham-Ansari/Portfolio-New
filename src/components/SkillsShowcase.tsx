@@ -17,7 +17,7 @@ export default function SkillsShowcase() {
     <div className={styles.sectionTop}><span className={styles.kicker}>03 / TOOLKIT</span><span className={styles.sectionMeta}>THE BUILDING BLOCKS</span></div>
     <Reveal className={styles.skillsLayout}>
       <div className={styles.stickyHeading}><h2>Systems,<br />models, and<br /><em>foundations.</em></h2><p className={styles.asideNote}>Explore the tools behind the work.</p><div className={styles.stackDiagram} aria-hidden="true"><span>APPLICATION</span><span>INTELLIGENCE</span><span>INFRASTRUCTURE</span></div></div>
-      <div className={styles.skillList}>{skills.map(({ title, icon: Icon, items }, i) => <details key={title} className={styles.skillGroup} open={i === 0}>
+      <div className={styles.skillList} data-skill-groups>{skills.map(({ title, icon: Icon, items }, i) => <details key={title} className={styles.skillGroup} open={i === 0}>
         <summary><span className={styles.skillNumber}>0{i + 1}</span><Icon size={22} strokeWidth={1.4} /><h3>{title}</h3><Plus className={styles.expandIcon} size={18} /></summary>
         <div className={styles.skillItems}>{items.map(item => <Chip label={item} key={item} className={styles.skillChip} />)}</div>
       </details>)}</div>

@@ -13,6 +13,7 @@ import Intro from "./Intro";
 import ProjectShowcase from "./ProjectShowcase";
 import SkillsShowcase from "./SkillsShowcase";
 import ScrollExperience from "./ScrollExperience";
+import ScrollDirector from "./ScrollDirector";
 import styles from "./Portfolio.module.css";
 
 const navItems = ["Home", "About", "Experience", "Skills", "Projects", "Contact"];
@@ -43,6 +44,7 @@ export default function Portfolio() {
     <a className={styles.skipLink} href="#main-content">Skip to content</a>
     <Intro />
     <ScrollExperience />
+    <ScrollDirector paused={paused} />
     <header className={styles.header}>
       <a href="#home" className={styles.brand} aria-label="Ifham Ansari home"><Image src="/images/projects/ifham.jpg" alt="" width={64} height={64} unoptimized loading="eager" className={styles.brandLogo} /><span>IFHAM ANSARI<small>AI ENGINEER</small></span></a>
       <nav className={styles.nav} aria-label="Main navigation">{navItems.map(item => <a key={item} href={`#${item.toLowerCase()}`} className={active === item ? styles.active : ""} aria-current={active === item ? "location" : undefined}>{item}</a>)}</nav>
@@ -59,7 +61,7 @@ export default function Portfolio() {
         <Reveal className={styles.aboutGrid}>
           <h2>Building<br className={styles.aboutBreak} /> applied AI<br /><em>with purpose.</em></h2>
           <div><p className={styles.copy}>I am an AI Engineer with hands-on experience designing intelligent applications, AI-powered chatbots, voice systems, agentic workflows, and scalable backends. My focus is practical: transforming modern LLMs, retrieval systems, and automation frameworks into dependable products.</p>
-            <div className={styles.focuses}>{["Agentic AI", "RAG Systems", "LLM Applications", "AI Automation", "Voice AI", "Intelligent SaaS"].map((item, i) => <span key={item}><small>0{i + 1}</small>{item}<ArrowUpRight size={14} /></span>)}</div>
+            <div className={styles.focuses} data-focus-tags>{["Agentic AI", "RAG Systems", "LLM Applications", "AI Automation", "Voice AI", "Intelligent SaaS"].map((item, i) => <span key={item}><small>0{i + 1}</small>{item}<ArrowUpRight size={14} /></span>)}</div>
           </div>
         </Reveal>
       </section>
@@ -67,7 +69,7 @@ export default function Portfolio() {
         <div className={styles.sectionTop}><span className={styles.kicker}>02 / EXPERIENCE</span><span className={styles.sectionMeta}>IDEAS INTO IMPLEMENTATION</span></div>
         <div className={styles.experienceLayout}>
           <div className={styles.stickyHeading}><h2>Professional<br /><em>experience.</em></h2><span className={styles.sideRule} /></div>
-          <div className={styles.timeline}>{experience.map((item, i) => <Reveal key={item.company}><article className={styles.experience}>
+          <div className={styles.timeline} data-timeline>{experience.map((item, i) => <Reveal key={item.company}><article className={styles.experience}>
             <span className={styles.timelineDot} /><div className={styles.experienceMeta}><span className={styles.period}>{item.period}</span><span className={styles.experienceIndex}>0{i + 1}</span></div>
             <h3>{item.company}</h3><p className={styles.role}>{item.role}</p><ul>{item.points.map(point => <li key={point}>{point}</li>)}</ul>
           </article></Reveal>)}</div>
@@ -84,7 +86,7 @@ export default function Portfolio() {
       </section>
       <section id="contact" className={`${styles.section} ${styles.contact}`}>
         <div className={styles.sectionTop}><span className={styles.kicker}>06 / CONTACT</span><span className={styles.sectionMeta}>THE NEXT CHAPTER</span></div>
-        <Reveal><p className={styles.contactIntro}>Have an AI project in mind?</p><div className={styles.contactHeading}><h2>Let&apos;s build<br />something<br /><em>intelligent.</em></h2><a href={links.email} className={styles.contactOrb} aria-label="Email Ifham Ansari"><ArrowUpRight strokeWidth={1} /><span>LET&apos;S TALK</span></a></div>
+        <Reveal><p className={styles.contactIntro}>Have an AI project in mind?</p><div className={styles.contactHeading}><h2>Let&apos;s build<br />something<br /><em>intelligent.</em></h2><a href={links.email} className={styles.contactOrb} data-magnetic aria-label="Email Ifham Ansari"><ArrowUpRight strokeWidth={1} /><span>LET&apos;S TALK</span></a></div>
           <div className={styles.contactActions}><a href={links.email}><Mail size={17} />ifhamansari933@gmail.com</a><a href="tel:+923102427788"><Phone size={17} />+92 310 2427788</a><Button component="a" href={links.cv} download className={styles.secondaryButton}>Download CV <ArrowUpRight size={16} /></Button></div>
         </Reveal>
       </section>

@@ -52,9 +52,15 @@ export default function IntelligenceVisual() {
         <path d="M250 22V48M250 452V478M22 250H48M452 250H478" stroke="#858cb1" strokeOpacity=".5" />
         <circle cx="250" cy="250" r="7" fill="#e5e8f6" /><circle cx="250" cy="250" r="20" stroke="#e5e8f6" strokeOpacity=".4" />
       </svg>
-      <div className={styles.tagOne}>RETRIEVE <span>01</span></div>
-      <div className={styles.tagTwo}>REASON <span>02</span></div>
-      <div className={styles.tagThree}>ACT <span>03</span></div>
+      <svg className="assembly-connections" viewBox="0 0 500 500" fill="none" aria-hidden="true">
+        <path data-pipeline-path d="M95 250H245" stroke="#b296ff" strokeWidth="1.5" />
+        <path data-pipeline-path d="M255 250H405" stroke="#b9dfff" strokeWidth="1.5" />
+        <circle data-pipeline-pulse cx="95" cy="250" r="3" fill="#dfd4ff" />
+        <circle data-pipeline-pulse cx="255" cy="250" r="3" fill="#b9dfff" />
+      </svg>
+      <div className={styles.tagOne} data-pipeline-node="retrieve">RETRIEVE <span>01</span></div>
+      <div className={styles.tagTwo} data-pipeline-node="reason">REASON <span>02</span></div>
+      <div className={styles.tagThree} data-pipeline-node="act">ACT <span>03</span></div>
     </motion.div>
     <div className={styles.caption}><span className={styles.dot} /> AGENTIC SYSTEMS <span className={styles.line} /> HUMAN-CENTERED OUTCOMES</div>
   </div>;

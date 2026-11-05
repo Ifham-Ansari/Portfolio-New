@@ -2,7 +2,7 @@
 .intro::backdrop { background: #09090f; }
 .intro[open] { display: flex; flex-direction: column; justify-content: space-between; animation: arrive .25s both; }
 .intro::before { content: ""; position: absolute; width: 70vw; height: 70vw; left: 40%; top: -30%; background: radial-gradient(circle,#6d45c62e,transparent 62%); pointer-events: none; }
-.intro[data-leaving="true"] { animation: leave .3s cubic-bezier(.65,0,.35,1) forwards; }
+.intro[data-leaving="true"] { animation: leave .45s cubic-bezier(.22,1,.36,1) forwards; }
 .top, .bottom { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 11px var(--font-mono); letter-spacing: .12em; color: #a9a7c2; }
 .center { position: relative; align-self: center; width: min(800px,100%); }
 .eyebrow { font: 11px var(--font-mono); letter-spacing: .17em; color: #b0bddc; margin-bottom: 25px; }

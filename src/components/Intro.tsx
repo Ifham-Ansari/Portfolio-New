@@ -28,7 +28,7 @@ export default function Intro() {
       clearTimeout(timer);
       dialog.dataset.leaving = "true";
       try { sessionStorage.setItem(sessionKey, "seen"); } catch { /* The intro still dismisses without storage. */ }
-      exitTimer = setTimeout(() => { dialog.close(); restore(); }, media.matches ? 0 : 300);
+      exitTimer = setTimeout(() => { dialog.close(); restore(); }, media.matches ? 0 : 450);
     };
     const cancel = (event: Event) => { event.preventDefault(); finish(); };
     const preferenceChange = () => { if (media.matches) finish(); };

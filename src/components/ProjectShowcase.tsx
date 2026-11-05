@@ -1,9 +1,9 @@
 ﻿"use client";
 
-import { useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Reveal from "./Reveal";
 import { useMotionPreference as useReducedMotion } from "./useMotionPreference";
-import { ArrowUpRight, GitBranch, ArrowDown } from "lucide-react";
+import { ArrowUpRight, GitBranch, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
 import { projects } from "@/data/portfolio-projects";
 import styles from "./ProjectShowcase.module.css";
 
@@ -14,6 +14,17 @@ export default function ProjectShowcase() {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
   const reduced = useReducedMotion();
   const visible = filter === "All" ? projects : projects.filter(project => project.category === filter);
+  const exitAnimation = useRef<Animation | null>(null);
+  const track = useRef<HTMLDivElement>(null);
+  useEffect(() => () => exitAnimation.current?.cancel(), []);
+  const changeFilter = (next: (typeof filters)[number]) => {
+    exitAnimation.current?.cancel();
+    if (next === filter) return;
+    if (reduced || !track.current) { setFilter(next); return; }
+    const animation = track.current.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: "ease-out" });
+    exitAnimation.current = animation;
+    animation.finished.then(() => { if (exitAnimation.current === animation) { setFilter(next); exitAnimation.current = null; } }).catch(() => {});
+  };
 
   return <section id="projects" className={styles.section} aria-labelledby="projects-heading">
     <div className={styles.topline}><span>04 / SELECTED WORK</span><span>ENGINEERING IN PRACTICE</span></div>
@@ -22,17 +33,23 @@ export default function ProjectShowcase() {
       <p>From intelligent assistants to complete platforms, explore a selection of real-world work.</p>
     </div>
     <div className={styles.filters} role="group" aria-label="Filter projects">
-      {filters.map(item => <button key={item} type="button" onClick={() => setFilter(item)} className={filter === item ? styles.selected : ""} aria-pressed={filter === item}>{item}{item === "All" && <span>11</span>}</button>)}
+      {filters.map(item => <button key={item} type="button" onClick={() => changeFilter(item)} className={filter === item ? styles.selected : ""} aria-pressed={filter === item}>{item}{item === "All" && <span>11</span>}</button>)}
     </div>
-    <div className={styles.editorial}>
+    <div className="gallery-controls" aria-label="Gallery navigation">
+      <span data-gallery-counter aria-live="off">01 / {String(visible.length).padStart(2, "0")}</span>
+      <span className="gallery-meter" aria-hidden="true"><span data-gallery-progress /></span>
+      <button type="button" data-gallery-direction="-1" aria-label="Previous project"><ArrowLeft size={18} /></button>
+      <button type="button" data-gallery-direction="1" aria-label="Next project"><ArrowRight size={18} /></button>
+    </div>
+    <div className={styles.editorial} data-gallery-viewport tabIndex={0} role="region" aria-label="Project gallery; use arrow keys to explore">
       <aside className={styles.index}>
         <p className={styles.results} aria-live="polite">{String(visible.length).padStart(2, "0")} PROJECTS <ArrowDown size={13} /></p>
         <nav aria-label="Project index">{visible.map(project => <a key={project.image} href={`#work-${project.image}`}><span>{String(projects.indexOf(project) + 1).padStart(2, "0")}</span>{project.title.split(" - ")[0]}</a>)}</nav>
       </aside>
-      <div className={styles.list}>
+      <div ref={track} className={styles.list} data-gallery-track>
         {visible.map(project => {
           const index = projects.indexOf(project);
-          return <Reveal key={project.title} id={`work-${project.image}`} className={styles.project} style={{ "--project-tone": tones[index] } as CSSProperties}><article>
+          return <Reveal data-project key={project.title} id={`work-${project.image}`} className={styles.project} style={{ "--project-tone": tones[index] } as CSSProperties}><article>
             <div className={styles.projectTop}><span className={styles.number}>{String(index + 1).padStart(2, "0")}</span><span>{project.category}</span>{project.featured && <span className={styles.featured}>FEATURED</span>}</div>
             <div className={styles.projectBody}>
               <div className={styles.visual} onPointerMove={event => {
