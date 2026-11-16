@@ -15,3 +15,16 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px soli
 [data-reveal][data-visible="true"] { animation: content-reveal .9s var(--reveal-delay, 0s) cubic-bezier(.16,1,.3,1) both; }
 @keyframes content-reveal { from { opacity: 0; transform: translateY(44px); clip-path: inset(10% 0 0 0); } to { opacity: 1; transform: none; clip-path: inset(0); } }
 @media(prefers-reduced-motion:reduce) { [data-reveal] { animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; } }
+/* Pre-paint cover while the intro is about to open (set by the <head> script, see introConfig.ts).
+   It matches the intro backdrop, so the hero never flashes before the intro. If JS never loads,
+   the cover releases itself after 4s so the page is never stuck behind it. */
+html[data-intro="pending"] body::after { content: ""; position: fixed; inset: 0; z-index: 2147483647; background: #09090f; animation: intro-cover-release 0s 4s forwards; }
+@keyframes intro-cover-release { to { visibility: hidden; } }
+/* "Case study" call-to-action — one style everywhere it appears (project cards, project galaxy, helicopter tour).
+   Matches the site's primary buttons: square corners, violet→blue fill, dark text, arrow that nudges on hover. */
+.cs-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 11px 18px 11px 20px; border: 0; border-radius: 0; background: linear-gradient(120deg, var(--violet), var(--accent)); color: #14111f; font: 700 14px/1 Manrope, Arial, sans-serif; letter-spacing: .01em; white-space: nowrap; cursor: pointer; box-shadow: 0 8px 22px #7a55e833; transition: transform .2s, box-shadow .2s, filter .2s; }
+.cs-button svg { flex-shrink: 0; transition: transform .25s; }
+.cs-button:hover { transform: translateY(-2px); filter: brightness(1.06); box-shadow: 0 12px 28px #7a55e855; }
+.cs-button:hover svg { transform: translate(2px, -2px); }
+.cs-button:active { transform: translateY(0); }
+.cs-button:focus-visible { outline: 2px solid #d7e9ff; outline-offset: 3px; }

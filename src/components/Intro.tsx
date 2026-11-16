@@ -3,16 +3,17 @@
 import { useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import styles from "./Intro.module.css";
-
-const sessionKey = "ifham-portfolio-intro-v1";
+import { INTRO_SESSION_KEY as sessionKey } from "./introConfig";
 
 export default function Intro() {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dialog = ref.current;
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!dialog || media.matches) return;
-    try { if (sessionStorage.getItem(sessionKey)) return; } catch { /* Storage can be unavailable in private contexts. */ }
+    // Drop the pre-paint cover (see introConfig.ts) whenever the intro won't play.
+    const dropCover = () => { if (document.documentElement.dataset.intro === "pending") document.documentElement.removeAttribute("data-intro"); };
+    if (!dialog || media.matches) return dropCover();
+    try { if (sessionStorage.getItem(sessionKey)) return dropCover(); } catch { /* Storage can be unavailable in private contexts. */ }
     const previousOverflow = document.body.style.overflow;
     const previousFocus = document.activeElement;
     let exitTimer: ReturnType<typeof setTimeout>;

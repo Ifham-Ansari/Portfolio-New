@@ -14,9 +14,14 @@ import ProjectShowcase from "./ProjectShowcase";
 import SkillsShowcase from "./SkillsShowcase";
 import ScrollExperience from "./ScrollExperience";
 import ScrollDirector from "./ScrollDirector";
+import dynamic from "next/dynamic";
+import ArchitectureDemo from "./ArchitectureDemo";
+import { CaseStudyProvider } from "./CaseStudyDialog";
+
+const ProjectGalaxy = dynamic(() => import("./ProjectGalaxy"), { ssr: false });
 import styles from "./Portfolio.module.css";
 
-const navItems = ["Home", "About", "Experience", "Skills", "Projects", "Contact"];
+const navItems = ["Home", "About", "Experience", "Skills", "Architecture", "Projects", "Galaxy", "Contact"];
 
 export default function Portfolio() {
   const [open, setOpen] = useState(false);
@@ -40,7 +45,7 @@ export default function Portfolio() {
     return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", onScroll); };
   }, []);
 
-  return <MotionConfig reducedMotion="user"><div className={styles.site} data-motion={paused || reduced ? "paused" : "running"}>
+  return <MotionConfig reducedMotion="user"><CaseStudyProvider><div className={styles.site} data-motion={paused || reduced ? "paused" : "running"}>
     <a className={styles.skipLink} href="#main-content">Skip to content</a>
     <Intro />
     <ScrollExperience />
@@ -60,7 +65,7 @@ export default function Portfolio() {
         <div className={styles.sectionTop}><span className={styles.kicker}>01 / ABOUT</span><span className={styles.sectionMeta}>THE THINKING BEHIND THE SYSTEMS</span></div>
         <Reveal className={styles.aboutGrid}>
           <h2>Building<br className={styles.aboutBreak} /> applied AI<br /><em>with purpose.</em></h2>
-          <div><p className={styles.copy}>I am an AI Engineer with hands-on experience designing intelligent applications, AI-powered chatbots, voice systems, agentic workflows, and scalable backends. My focus is practical: transforming modern LLMs, retrieval systems, and automation frameworks into dependable products.</p>
+          <div><p className={styles.copy} data-anim="rise">I am an AI Engineer with hands-on experience designing intelligent applications, AI-powered chatbots, voice systems, agentic workflows, and scalable backends. My focus is practical: transforming modern LLMs, retrieval systems, and automation frameworks into dependable products.</p>
             <div className={styles.focuses} data-focus-tags>{["Agentic AI", "RAG Systems", "LLM Applications", "AI Automation", "Voice AI", "Intelligent SaaS"].map((item, i) => <span key={item}><small>0{i + 1}</small>{item}<ArrowUpRight size={14} /></span>)}</div>
           </div>
         </Reveal>
@@ -76,22 +81,24 @@ export default function Portfolio() {
         </div>
       </section>
       <SkillsShowcase />
-      <ProjectShowcase />
+      <ArchitectureDemo />
+      <ProjectShowcase paused={paused} />
+      <ProjectGalaxy paused={paused} />
       <section id="education" className={`${styles.section} ${styles.credentials}`}>
-        <div className={styles.sectionTop}><span className={styles.kicker}>05 / FOUNDATION</span><span className={styles.sectionMeta}>LEARNING, APPLIED</span></div>
+        <div className={styles.sectionTop}><span className={styles.kicker}>07 / FOUNDATION</span><span className={styles.sectionMeta}>LEARNING, APPLIED</span></div>
         <Reveal className={styles.credentialGrid}>
-          <article className={styles.education}><GraduationCap size={26} strokeWidth={1.2} /><p className={styles.kicker}>EDUCATION</p><h2>Bachelor of Science<br />in <em>Artificial<br />Intelligence</em></h2><p>Dawood University of Engineering & Technology / 2021-2025</p><div className={styles.grade}><strong>3.74<span> / 4.0</span></strong><span>CGPA</span></div></article>
-          <article className={styles.recognition}><div className={styles.recognitionHeading}><Award size={22} strokeWidth={1.3} /><h3>Recognition</h3></div><ol>{certifications.map((item, i) => <li key={item}><span>0{i + 1}</span><p>{item}</p></li>)}</ol></article>
+          <article className={styles.education} data-anim="slide-left"><GraduationCap size={26} strokeWidth={1.2} /><p className={styles.kicker}>EDUCATION</p><h2>Bachelor of Science<br />in <em>Artificial<br />Intelligence</em></h2><p>Dawood University of Engineering & Technology / 2021-2025</p><div className={styles.grade}><strong>3.74<span> / 4.0</span></strong><span>CGPA</span></div></article>
+          <article className={styles.recognition}><div className={styles.recognitionHeading} data-anim="rise"><Award size={22} strokeWidth={1.3} /><h3>Recognition</h3></div><ol>{certifications.map((item, i) => <li key={item}><span>0{i + 1}</span><p>{item}</p></li>)}</ol></article>
         </Reveal>
       </section>
       <section id="contact" className={`${styles.section} ${styles.contact}`}>
-        <div className={styles.sectionTop}><span className={styles.kicker}>06 / CONTACT</span><span className={styles.sectionMeta}>THE NEXT CHAPTER</span></div>
-        <Reveal><p className={styles.contactIntro}>Have an AI project in mind?</p><div className={styles.contactHeading}><h2>Let&apos;s build<br />something<br /><em>intelligent.</em></h2><a href={links.email} className={styles.contactOrb} data-magnetic aria-label="Email Ifham Ansari"><ArrowUpRight strokeWidth={1} /><span>LET&apos;S TALK</span></a></div>
-          <div className={styles.contactActions}><a href={links.email}><Mail size={17} />ifhamansari933@gmail.com</a><a href="tel:+923102427788"><Phone size={17} />+92 310 2427788</a><Button component="a" href={links.cv} download className={styles.secondaryButton}>Download CV <ArrowUpRight size={16} /></Button></div>
+        <div className={styles.sectionTop}><span className={styles.kicker}>08 / CONTACT</span><span className={styles.sectionMeta}>THE NEXT CHAPTER</span></div>
+        <Reveal><p className={styles.contactIntro} data-anim="rise">Have an AI project in mind?</p><div className={styles.contactHeading}><h2>Let&apos;s build<br />something<br /><em>intelligent.</em></h2><a href={links.email} className={styles.contactOrb} data-magnetic data-anim="pop" aria-label="Email Ifham Ansari"><ArrowUpRight strokeWidth={1} /><span>LET&apos;S TALK</span></a></div>
+          <div className={styles.contactActions} data-anim="stagger"><a href={links.email}><Mail size={17} />ifhamansari933@gmail.com</a><a href="tel:+923102427788"><Phone size={17} />+92 310 2427788</a><Button component="a" href={links.cv} download className={styles.secondaryButton}>Download CV <ArrowUpRight size={16} /></Button></div>
         </Reveal>
       </section>
     </main>
-    <footer className={styles.footer}><span>Ifham Ansari / AI Engineer</span><div><a href={links.github} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={13} /></a><a href={links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={13} /></a><a href={links.email}>Email <ArrowUpRight size={13} /></a></div><span>Copyright {new Date().getFullYear()}</span></footer>
+    <footer className={styles.footer} data-anim="stagger"><span>Ifham Ansari / AI Engineer</span><div><a href={links.github} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={13} /></a><a href={links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={13} /></a><a href={links.email}>Email <ArrowUpRight size={13} /></a></div><span>Copyright {new Date().getFullYear()}</span></footer>
     <div className={styles.utilityControls}><button onClick={() => setPaused(!paused)} aria-label={paused ? "Resume ambient motion" : "Pause ambient motion"} aria-pressed={paused} disabled={!!reduced}>{paused || reduced ? <Play size={15} /> : <Pause size={15} />}</button>{showTop && <a href="#home" aria-label="Back to top"><ArrowUp size={17} /></a>}</div>
-  </div></MotionConfig>;
+  </div></CaseStudyProvider></MotionConfig>;
 }

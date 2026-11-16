@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { introPrepaintScript } from "@/components/introConfig";
 
 export const metadata: Metadata = {
   title: "Ifham Ansari | AI Engineer | Agentic AI, RAG & AI Automation",
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="en"><body>{children}</body></html>;
+  // suppressHydrationWarning: the pre-paint script adds data-intro to <html> before React hydrates.
+  return <html lang="en" suppressHydrationWarning>
+    <head><script dangerouslySetInnerHTML={{ __html: introPrepaintScript }} /></head>
+    <body>{children}</body>
+  </html>;
 }
