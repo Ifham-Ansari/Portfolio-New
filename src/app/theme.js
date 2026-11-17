@@ -12,22 +12,13 @@ export default StyleSheet.create({
    (The tour's 3D landscape — sky, grass, mountains, trees — keeps its natural colours on purpose.)
    =====================================================================================================
   ':root': {
-    // --- 1. YOUR COLOURS --------------------------------------------------------------------------
-    'Primary': '#0B0D17',
-    // main background
-    'Secondary': '#8B5CF6',
-    // accent: buttons, links, active tabs, highlights, glows
-    'Light': '#F8FAFC',
-    // text and light accents
-    'Hover': '#704ac7',
-    // hover / focus accent
-    // Status colours (optional)
-    'Success': '#6EE7B7',
-    // "land" buttons, success ticks
-    'Highlight': '#F2B84B',
-    // "featured" badges, tour telemetry
-    'Danger': '#EF5A42',
-    // crash warnings
+    'Primary': '#0D101B',
+    'Secondary': '#9A9CE8',
+    'Light': '#F0F0FA',
+    'Hover': '#B9BAFF',
+    'Success': '#83C7AA',
+    'Highlight': '#E4C77B',
+    'Danger': '#F17D91',
     // --- 2. DERIVED SHADES (built from section 1) -------------------------------------------------
     // Neutral ladder: the light colour blended into the background.
      Low numbers = raised surfaces and borders, middle = muted text, high = body text.

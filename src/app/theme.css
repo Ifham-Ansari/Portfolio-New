@@ -10,16 +10,13 @@
    ===================================================================================================== */
 
 :root {
-  /* --- 1. YOUR COLOURS -------------------------------------------------------------------------- */
-  --primary: #0B0D17;     /* main background */
-  --secondary: #8B5CF6;   /* accent: buttons, links, active tabs, highlights, glows */
-  --light: #F8FAFC;       /* text and light accents */
-  --hover: #704ac7;       /* hover / focus accent */
-
-  /* Status colours (optional) */
-  --success: #6EE7B7;     /* "land" buttons, success ticks */
-  --highlight: #F2B84B;   /* "featured" badges, tour telemetry */
-  --danger: #EF5A42;      /* crash warnings */
+--primary: #0D101B;
+--secondary: #9A9CE8;
+--light: #F0F0FA;
+--hover: #B9BAFF;
+--success: #83C7AA;
+--highlight: #E4C77B;
+--danger: #F17D91;
 
 
   /* --- 2. DERIVED SHADES (built from section 1) ------------------------------------------------- */
