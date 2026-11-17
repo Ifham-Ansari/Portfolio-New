@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import { ArrowLeft, ArrowRight, ArrowUpRight, GitBranch, Plane } from "lucide-react";
-import { projects } from "@/data/portfolio-projects";
+import { projects, PROJECT_GROUPS, type ProjectGroup } from "@/data/portfolio-projects";
 import { useCaseStudy } from "./CaseStudyDialog";
 import { useMotionPreference } from "./useMotionPreference";
 import styles from "./ProjectShowcase.module.css";
@@ -14,25 +14,17 @@ const HelicopterTour = dynamic(() => import("./HelicopterTour"), { ssr: false })
 
 type ProjectsMotion = typeof import("@/animations/projects");
 
-/** Filter buttons, in the order the categories first appear in the project list. */
-const CATEGORIES = ["All", "Agentic AI & RAG", "AI & LLM Applications", "Web Applications", "Voice AI", "AI Automation"] as const;
-type Filter = (typeof CATEGORIES)[number];
-/** Default filter: only the Agentic AI & RAG projects show first, so the section
-    doesn't take eleven projects' worth of scrolling to get past. "All" is one click away. */
-const DEFAULT_FILTER: Filter = "Agentic AI & RAG";
+/** Three tabs — AI projects, pure full-stack, and AI software / AI full-stack. AI projects show first. */
+const countFor = (group: ProjectGroup) => projects.filter(p => p.group === group).length;
+const labelFor = (group: ProjectGroup) => PROJECT_GROUPS.find(g => g.id === group)?.label ?? "";
 
 export default function ProjectShowcase({ paused = false }: { paused?: boolean }) {
   const [tourOpen, setTourOpen] = useState(false);
-  const [filter, setFilter] = useState<Filter>(DEFAULT_FILTER);
+  const [filter, setFilter] = useState<ProjectGroup>(PROJECT_GROUPS[0].id);
   const { openCaseStudy } = useCaseStudy();
   const closeTour = useCallback(() => setTourOpen(false), []);
 
-  const visible = useMemo(
-    () => (filter === "All" ? projects : projects.filter(p => p.category === filter)),
-    [filter],
-  );
-  const countFor = (category: Filter) =>
-    category === "All" ? projects.length : projects.filter(p => p.category === category).length;
+  const visible = useMemo(() => projects.filter(p => p.group === filter), [filter]);
 
   // Scroll motion for the cards (horizontal gallery on desktop, reveals elsewhere) — see animations/projects.ts.
   // Rebuilt whenever the visible cards change. The module is loaded once, then applied synchronously in the
@@ -64,9 +56,9 @@ export default function ProjectShowcase({ paused = false }: { paused?: boolean }
 
       <Reveal className={styles.tourCard} data-anim="zoom">
         <div className={styles.tourCopy}>
-          <p className={styles.tourKicker}>HELICOPTER TOUR · 11 PROJECTS</p>
+          <p className={styles.tourKicker}>HELICOPTER TOUR · {projects.length} PROJECTS</p>
           <h3>Take the helicopter tour.</h3>
-          <p>Hop in and fly over all eleven projects in 3D. Steer with the arrow keys, fly higher or lower to get a closer look, and land on any project to open its full case study.</p>
+          <p>Hop in and fly over all {projects.length} projects in 3D. Steer with the arrow keys, fly higher or lower to get a closer look, and land on any project to open its full case study.</p>
         </div>
         <button type="button" className={styles.tourButton} onClick={() => setTourOpen(true)}>
           See my projects — take the helicopter tour <Plane size={18} />
@@ -81,16 +73,16 @@ export default function ProjectShowcase({ paused = false }: { paused?: boolean }
       <div className={styles.galleryPin}>
         <div className={styles.stage} data-gallery-stage>
           <div className={styles.stageBar}>
-            <div className={styles.filters} role="group" aria-label="Filter projects by category" data-anim="stagger">
-              {CATEGORIES.map(category => (
+            <div className={styles.filters} role="group" aria-label="Project type" data-anim="stagger">
+              {PROJECT_GROUPS.map(group => (
                 <button
-                  key={category}
+                  key={group.id}
                   type="button"
-                  className={`${styles.filterButton} ${filter === category ? styles.filterActive : ""}`}
-                  aria-pressed={filter === category}
-                  onClick={() => setFilter(category)}
+                  className={`${styles.filterButton} ${filter === group.id ? styles.filterActive : ""}`}
+                  aria-pressed={filter === group.id}
+                  onClick={() => setFilter(group.id)}
                 >
-                  {category} <span aria-hidden="true">· {countFor(category)}</span>
+                  {group.label} <span aria-hidden="true">· {countFor(group.id)}</span>
                 </button>
               ))}
             </div>
@@ -104,7 +96,7 @@ export default function ProjectShowcase({ paused = false }: { paused?: boolean }
 
           <div className={styles.stageMeta}>
             <p className={styles.resultCount} aria-live="polite">
-              Showing {visible.length} of {projects.length} projects — {filter}
+              Showing {visible.length} of {projects.length} projects — {labelFor(filter)}
             </p>
             <span className={styles.galleryHint} aria-hidden="true">Keep scrolling — projects move sideways <ArrowRight size={13} /></span>
           </div>
@@ -114,6 +106,7 @@ export default function ProjectShowcase({ paused = false }: { paused?: boolean }
               {visible.map(project => (
                 <article key={project.image} className={styles.card} data-project>
                   <div className={styles.cardImage} data-card-image>
+                    <span className={styles.cardBackdrop} style={{ backgroundImage: `url(/images/projects/${project.image}.webp)` }} aria-hidden="true" />
                     <Image
                       src={`/images/projects/${project.image}.webp`}
                       alt={`${project.title} project preview`}
@@ -125,7 +118,12 @@ export default function ProjectShowcase({ paused = false }: { paused?: boolean }
                     {project.featured && <span className={styles.cardFeatured}>FEATURED</span>}
                   </div>
                   <div className={styles.cardBody} data-card-body>
-                    <p className={styles.cardCategory}>{project.category}</p>
+                    <p className={styles.cardCategory}>
+                      {/* Stacked cards: number + featured sit here instead of over the image (see CSS). */}
+                      <span className={styles.cardNumberInline} aria-hidden="true">{String(projects.indexOf(project) + 1).padStart(2, "0")}</span>
+                      {project.category}
+                      {project.featured && <span className={styles.cardFeaturedInline}>FEATURED</span>}
+                    </p>
                     <h3>{project.title}</h3>
                     <p className={styles.cardDescription}>{project.description}</p>
                     <div className={styles.cardTags}>{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>

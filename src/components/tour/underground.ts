@@ -143,7 +143,7 @@ const signTexture = (THREE: Three, text: string, tone: string) => canvasTexture(
   g.fillStyle = "#101219"; g.fillRect(0, 0, 512, 128);
   g.strokeStyle = tone; g.lineWidth = 6; g.strokeRect(6, 6, 500, 116);
   g.fillStyle = tone; g.font = "bold 54px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
-  g.fillText(text, 256, 68);
+  g.fillText(text, 256, 68, 472); // squeezed to fit longer signs
 });
 
 // --- Builder ---------------------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ export function buildUnderground(THREE: Three, scene: THREE_NS.Scene, opts: { x:
   roof.castShadow = true;
   const setSurfaceDoors = liftFront(0, concrete);
   const sign = add(new THREE.Mesh(new THREE.PlaneGeometry(3.4, 0.85), new THREE.MeshBasicMaterial({
-    map: signTexture(THREE, kind === "archive" ? "▼ ARCHIVE  −14 M" : "▼ BUNKER  −14 M", toneHex),
+    map: signTexture(THREE, kind === "archive" ? "▼ OFFICE  −14 M" : "▼ CONTROL ROOM  −14 M", toneHex),
   })), lx, 5.2, lz + SHAFT + 0.2);
   sign.rotation.x = -0.1;
   // Little lamp posts either side of the door.

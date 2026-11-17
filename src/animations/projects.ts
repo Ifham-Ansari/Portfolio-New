@@ -165,10 +165,7 @@ export function animateProjects(section: HTMLElement, { intro = false } = {}) {
       timeline.fromTo(card, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: .8, ease: "power3.out" });
       if (image) timeline.fromTo(image, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 1, ease: "power3.inOut" }, .1);
       if (body) timeline.fromTo(Array.from(body.children), { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .55, stagger: .07, ease: "power2.out" }, .3);
-      // Slow vertical pan while the card crosses the screen (object-position keeps the CSS hover zoom working).
-      const img = query<HTMLImageElement>(card, "img");
-      if (img) gsap.fromTo(img, { objectPosition: "50% 15%" }, { objectPosition: "50% 85%", ease: "none",
-        scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true } });
+      // (No image pan: the stacked image box is 3:2, the same shape as the images, so the whole picture shows.)
     });
   }
 

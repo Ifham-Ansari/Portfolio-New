@@ -8,11 +8,11 @@ import { useMotionPreference as useReducedMotion } from "./useMotionPreference";
 import { projects, type PortfolioProject } from "@/data/portfolio-projects";
 import styles from "./ProjectGalaxy.module.css";
 
-const TONES = ["#c1a8ff", "#b8dfff", "#d3b5ef", "#b8c3ff", "#b1d6f9", "#a8b6ed", "#a7d3ed", "#bfbcf1", "#b4cbf3", "#d1b9f0", "#a5c0ef"];
+const TONES = ["#c1a8ff", "#b8dfff", "#d3b5ef", "#b8c3ff", "#b1d6f9", "#a8b6ed", "#a7d3ed", "#bfbcf1", "#b4cbf3", "#d1b9f0", "#a5c0ef", "#c8b6f5", "#aecdf6"];
 const SHORT_NAMES: Record<string, string> = {
   ez_qanoon: "EZ Qanoon", iwm_crm: "IWM CRM", brandwings: "Brandwings", audifyer: "Audifyer",
-  whatsapp: "WhatsApp Suite", "e-commerce": "1AND5TECH", ai_lms: "AI LMS", raq_qa_img: "Semantic QA",
-  doctor_ai: "Doctor AI", gavoraa: "Gavora", siem: "CyberShield",
+  whatsapp: "WhatsApp Suite", brandwings_pos: "Brandwings POS", brandwings_crm: "Brandwings CRM", nawaya: "Nawaya",
+  "e-commerce": "1AND5TECH", mgt_packers: "MGT Movers", nawaya_social: "Social Automation", ai_lms: "AI LMS", siem: "CyberShield",
 };
 
 type GalaxyProject = PortfolioProject & { shortName: string; tone: string };
@@ -149,7 +149,7 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
       const labelEls: HTMLSpanElement[] = [];
 
       GX.forEach((p, i) => {
-        const radius = 12.5 + i * 2.55;
+        const radius = 12.5 + i * (25.5 / Math.max(1, GX.length - 1)); // orbits always span 12.5 → 38, however many worlds
         const size = p.featured ? 1.6 : 1.18 + (i % 3) * 0.13;
         const tone = new THREE.Color(p.tone);
 
@@ -184,7 +184,7 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
         halo.scale.set(size * 5.4, size * 5.4, 1);
         holder.add(halo);
 
-        if (i === 0 || i === 10) { // ringed worlds: EZ Qanoon and CyberShield
+        if (i === 0 || i === GX.length - 1) { // ringed worlds: the first and the outermost
           const ring = new THREE.Mesh(
             new THREE.RingGeometry(size * 1.45, size * 1.95, 48),
             new THREE.MeshBasicMaterial({ color: tone, transparent: true, opacity: 0.45, side: THREE.DoubleSide }),
@@ -430,17 +430,17 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
   const num = String(selected + 1).padStart(2, "0");
 
   return <section id="galaxy" ref={sectionRef} className={`${styles.section} ${styles.galaxySection}`} aria-labelledby="galaxy-heading">
-    <div className={styles.sectionTop}><span className={styles.kicker}>06 / PROJECT GALAXY</span><span className={styles.sectionMeta}>11 PROJECTS — 11 WORLDS IN ORBIT</span></div>
+    <div className={styles.sectionTop}><span className={styles.kicker}>06 / PROJECT GALAXY</span><span className={styles.sectionMeta}>{GX.length} PROJECTS — {GX.length} WORLDS IN ORBIT</span></div>
     <Reveal className={styles.head}>
       <h2 id="galaxy-heading">Every project,<br /><em>its own world.</em></h2>
-      <p data-anim="rise">All eleven products orbit here as planets around one core — the same AI engineering underneath every one of them. Drag to spin the system, then click a planet to explore its world.</p>
+      <p data-anim="rise">All {GX.length} products orbit here as planets around one core — the same AI engineering underneath every one of them. Drag to spin the system, then click a planet to explore its world.</p>
     </Reveal>
     <Reveal className={styles.panel}>
       <div className={styles.hud} data-anim="rise">
         <span>SELECTED&nbsp; —&nbsp; <strong>{p.shortName.toUpperCase()}</strong></span>
         <span className={styles.hudHint}>DRAG TO SPIN &nbsp;·&nbsp; CLICK A PLANET &nbsp;·&nbsp; PINCH OR + / − TO ZOOM</span>
       </div>
-      <div id="gxStage" ref={stageRef} className={styles.stage} data-anim="zoom" role="img" aria-label="Interactive 3D galaxy: the eleven projects shown as planets orbiting a glowing core. Drag to rotate, click a planet to select it. Every planet can also be chosen from the list below the galaxy.">
+      <div id="gxStage" ref={stageRef} className={styles.stage} data-anim="zoom" role="img" aria-label={`Interactive 3D galaxy: the ${GX.length} projects shown as planets orbiting a glowing core. Drag to rotate, click a planet to select it. Every planet can also be chosen from the list below the galaxy.`}>
         <div id="gxLabels" ref={labelsRef} className={styles.labels} aria-hidden="true" />
         <div id="gxTip" ref={tipRef} className={styles.tip} hidden />
         {webglFailed && <div className={styles.fallback}>
@@ -460,14 +460,14 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
       </div>
       <div className={styles.detail} aria-live="polite" data-anim="rise">
         <div>
-          <p className={styles.detailKicker}>WORLD {num} / 11 · {p.category.toUpperCase()}</p>
+          <p className={styles.detailKicker}>WORLD {num} / {GX.length} · {p.category.toUpperCase()}</p>
           <h3 id="gxDetailTitle">{p.title}</h3>
           <p className={styles.detailDesc}>{p.description}</p>
           <div className={styles.tags}>{p.tags.map(t => <span key={t}>{t}</span>)}</div>
         </div>
         <div className={styles.detailSide}>
           <div className={styles.stats}>
-            <div className={styles.stat}><span>ORBIT</span><strong>{num} / 11</strong></div>
+            <div className={styles.stat}><span>ORBIT</span><strong>{num} / {GX.length}</strong></div>
             <div className={styles.stat}><span>STATUS</span><strong>{p.featured ? "Featured world" : "In orbit"}</strong></div>
           </div>
           <div className={styles.links}>

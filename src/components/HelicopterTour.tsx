@@ -13,44 +13,50 @@ import styles from "./HelicopterTour.module.css";
 
 const SOUND_KEY = "ifham-tour-sound"; // remembers the sound on/off choice
 
-const TONES = ["#c1a8ff", "#b8dfff", "#d3b5ef", "#b8c3ff", "#b1d6f9", "#a8b6ed", "#a7d3ed", "#bfbcf1", "#b4cbf3", "#d1b9f0", "#a5c0ef"];
+const TONES = ["#c1a8ff", "#b8dfff", "#d3b5ef", "#b8c3ff", "#b1d6f9", "#a8b6ed", "#a7d3ed", "#bfbcf1", "#b4cbf3", "#d1b9f0", "#a5c0ef", "#c8b6f5", "#aecdf6"];
 const SHORT_NAMES: Record<string, string> = {
   ez_qanoon: "EZ Qanoon", iwm_crm: "IWM CRM", brandwings: "Brandwings", audifyer: "Audifyer",
-  whatsapp: "WhatsApp Suite", "e-commerce": "1AND5TECH", ai_lms: "AI LMS", raq_qa_img: "Semantic QA",
-  doctor_ai: "Doctor AI", gavoraa: "Gavora", siem: "CyberShield",
+  whatsapp: "WhatsApp Suite", brandwings_pos: "Brandwings POS", brandwings_crm: "Brandwings CRM", nawaya: "Nawaya",
+  "e-commerce": "1AND5TECH", mgt_packers: "MGT Movers", nawaya_social: "Social Automation", ai_lms: "AI LMS", siem: "CyberShield",
 };
 
 /**
- * Approved terrain mapping (projects stay in original 01–11 order along the route):
- *  0 EZ Qanoon      — mountain, highest peak
- *  1 IWM CRM        — building rooftop
- *  2 Brandwings     — building rooftop
- *  3 Audifyer       — mountain, second peak
- *  4 WhatsApp Suite — ground level
- *  5 1AND5TECH      — building rooftop
- *  6 AI LMS         — building rooftop
- *  7 Semantic QA    — UNDERGROUND archive / data vault
- *  8 Doctor AI      — ground level
- *  9 Gavora         — ground level
- * 10 CyberShield    — UNDERGROUND security bunker
+ * Terrain along the route (projects in data order, 01–13):
+ *  0 EZ Qanoon         — mountain, highest peak
+ *  1 IWM CRM           — building rooftop
+ *  2 Brandwings        — building rooftop
+ *  3 Audifyer          — mountain, second peak
+ *  4 WhatsApp Suite    — ground level
+ *  5 Brandwings POS    — building rooftop
+ *  6 Brandwings CRM    — building rooftop
+ *  7 Nawaya            — UNDERGROUND office
+ *  8 1AND5TECH         — ground level
+ *  9 MGT Movers        — ground level
+ * 10 Social Automation — UNDERGROUND control room
+ * 11 AI LMS            — building rooftop
+ * 12 CyberShield       — ground level
  */
 type Terrain = "mountain" | "rooftop" | "ground" | "underground";
 const PAD_TERRAIN: Terrain[] = [
   "mountain", "rooftop", "rooftop", "mountain", "ground",
   "rooftop", "rooftop", "underground", "ground", "ground", "underground",
+  "rooftop", "ground",
 ];
 /** Surface height (y) of each pad. Mountain pads sit on flat summits, rooftop pads on roofs. */
-const PAD_Y = [26, 12, 10, 20, 0, 11, 9, 0, 0, 0, 0];
+const PAD_Y = [26, 12, 10, 20, 0, 11, 9, 0, 0, 0, 0, 9, 0];
 const UNDERGROUND_PADS = new Set([7, 10]);
 const CHAMBER_Y = -14; // underground chamber floor height
 const padY = (i: number) => (i < 0 ? 0 : PAD_Y[i]);
 
 /** Distance between neighbouring pads (1 world unit ≈ 1 m). The ground, road and scenery all scale from it. */
 const PAD_SPACING = 90;
-const padX = (i: number) => (i - 5) * PAD_SPACING;
+/** One pad per project, centred on x = 0. */
+const PAD_COUNT = projects.length;
+const LAST_PAD = PAD_COUNT - 1;
+const padX = (i: number) => (i - LAST_PAD / 2) * PAD_SPACING;
 const START_X = padX(0) - PAD_SPACING;
-/** Half the width of the world: the start pad, all eleven pads and some scenery beyond both ends. */
-const WORLD_HALF = 6 * PAD_SPACING + 140;
+/** Half the width of the world: the start pad, every project pad and some scenery beyond both ends. */
+const WORLD_HALF = (LAST_PAD / 2 + 1) * PAD_SPACING + 140;
 const HELI_REST = 1.35; // helicopter origin height above the surface when landed
 
 /* --- Flight model (game-style handling) -------------------------------------------------------------
@@ -73,7 +79,7 @@ const CRASH_WALL = 8;     // m/s into a building side; slower is a bump
 const CRASH_IMPACT = 9;   // m/s closing speed onto the ground or a mountain slope (descent + slope rising under you)
 const CRASH_PAD = 15;     // m/s onto a helipad — a firm manual landing is fine, a boosted dive is not
 const RESPAWN_AFTER = 3.4; // seconds before the helicopter is back on the nearest helipad (Enter: straight away)
-const ROUTE_MIN = START_X - 70, ROUTE_MAX = padX(10) + 90; // flyable stretch
+const ROUTE_MIN = START_X - 70, ROUTE_MAX = padX(LAST_PAD) + 90; // flyable stretch
 
 type Input = { left: boolean; right: boolean; up: boolean; down: boolean; boost: boolean };
 /** Physical keys (event.code), so WASD and the arrows work on any keyboard layout. */
@@ -122,7 +128,7 @@ const isKey = (event: KeyboardEvent, letter: string) =>
 const padInRange = (x: number): number | null => {
   if (Math.abs(x - START_X) < LAND_RANGE) return -1;
   const i = Math.round((x - padX(0)) / PAD_SPACING);
-  return i >= 0 && i <= 10 && Math.abs(x - padX(i)) < LAND_RANGE ? i : null;
+  return i >= 0 && i <= LAST_PAD && Math.abs(x - padX(i)) < LAND_RANGE ? i : null;
 };
 const padCentre = (i: number) => (i < 0 ? START_X : padX(i));
 
@@ -1017,7 +1023,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
       const respawn = () => {
         const f = flightRef.current;
         let pad = -1;
-        for (let i = 0; i <= 10; i++) if (Math.abs(padX(i) - heli.position.x) < Math.abs(padCentre(pad) - heli.position.x)) pad = i;
+        for (let i = 0; i <= LAST_PAD; i++) if (Math.abs(padX(i) - heli.position.x) < Math.abs(padCentre(pad) - heli.position.x)) pad = i;
         velX = 0; velY = 0;
         heli.position.set(padCentre(pad), padY(pad) + HELI_REST, 0);
         heli.rotation.set(0, f.facing >= 0 ? 0 : Math.PI, 0);
@@ -1104,7 +1110,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
       /** Next pad in the direction the nose points (for the telemetry readout). */
       const nextPad = (x: number, facing: number) => {
         let best = -1, bestDist = Infinity;
-        for (let i = 0; i <= 10; i++) {
+        for (let i = 0; i <= LAST_PAD; i++) {
           const d = (padX(i) - x) * facing;
           if (d > LAND_RANGE && d < bestDist) { best = i; bestDist = d; }
         }
@@ -1453,7 +1459,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
   const hud = crashed ? "⚠ CRASHED" : phase === "invite" || (overPad && index < 0)
     ? "START PAD"
     : overPad && current
-      ? `${String(index + 1).padStart(2, "0")} / 11 — ${currentName}`
+      ? `${String(index + 1).padStart(2, "0")} / ${PAD_COUNT} — ${currentName}`
       : "EN ROUTE";
   const isUndergroundPad = index >= 0 && UNDERGROUND_PADS.has(index);
   const terrainNote = overPad && index >= 0
@@ -1466,7 +1472,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
     ?? (crashed ? `💥 ${CRASH_TEXT[crash.what]} Respawning on the nearest helipad…`
       : flying && inRange && current ? `Over ${currentName}'s helipad — press L to land, or keep flying.`
       : parked && index < 0 ? "Back at the start pad. Press Enter to take off."
-      : parked && isUndergroundPad ? `Landed at the ${index === 7 ? "archive" : "bunker"} entrance. Press U to take the lift underground, or Enter to take off.`
+      : parked && isUndergroundPad ? `Landed at the ${index === 7 ? "underground office" : "control room"} entrance. Press U to take the lift underground, or Enter to take off.`
       : SPEECH[phase]);
   const routeLeft = (x: number) => `${(((x - ROUTE_MIN) / (ROUTE_MAX - ROUTE_MIN)) * 100).toFixed(2)}%`;
 
@@ -1474,7 +1480,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
     <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Helicopter tour of Ifham Ansari's projects"
       onPointerDown={() => audioRef.current?.resume()}>
       <div className={styles.topbar}>
-        <span className={styles.topTitle}>HELICOPTER TOUR <span>· 11 PROJECTS</span></span>
+        <span className={styles.topTitle}>HELICOPTER TOUR <span>· {PAD_COUNT} PROJECTS</span></span>
         <span className={`${styles.hud}${crashed ? ` ${styles.hudCrash}` : ""}`} aria-live="polite">{hud}{terrainNote}</span>
         {/* Altitude · speed · next project — written by the render loop. */}
         <span ref={telemetryRef} className={styles.alt}>ALT 0 m · 0 km/h</span>
@@ -1517,7 +1523,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
         {/* Underground office: project info as a side card, so the 3D presentation stays in view. */}
         {phase === "underground" && inChamber && current && (
           <div className={styles.chamberCard} role="dialog" aria-label={`${current.title} — underground office`}>
-            <span className={styles.chamberKicker}>{index === 7 ? "UNDERGROUND ARCHIVE · −14 M" : "UNDERGROUND BUNKER · −14 M"}</span>
+            <span className={styles.chamberKicker}>{index === 7 ? "UNDERGROUND OFFICE · −14 M" : "UNDERGROUND CONTROL ROOM · −14 M"}</span>
             <h3>{current.title}</h3>
             <p>{current.description}</p>
             <div className={styles.chamberTags}>{current.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
