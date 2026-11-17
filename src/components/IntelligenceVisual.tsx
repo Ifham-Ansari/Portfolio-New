@@ -37,26 +37,26 @@ export default function IntelligenceVisual() {
       <div className={styles.halo} />
       <svg viewBox="0 0 500 500" className={styles.network} fill="none">
         <defs>
-          <radialGradient id="sphere-light"><stop stopColor="#a27aff" stopOpacity=".4" /><stop offset=".6" stopColor="#7e5ac9" stopOpacity=".12" /><stop offset="1" stopColor="#b9dfff" stopOpacity="0" /></radialGradient>
-          <linearGradient id="orbit-light"><stop stopColor="#c8ceec" /><stop offset="1" stopColor="#7783d8" stopOpacity=".2" /></linearGradient>
+          <radialGradient id="sphere-light"><stop style={{ stopColor: "var(--secondary)" }} stopOpacity=".4" /><stop offset=".6" style={{ stopColor: "var(--secondary)" }} stopOpacity=".12" /><stop offset="1" style={{ stopColor: "var(--accent-2)" }} stopOpacity="0" /></radialGradient>
+          <linearGradient id="orbit-light"><stop style={{ stopColor: "var(--n-84)" }} /><stop offset="1" style={{ stopColor: "var(--secondary)" }} stopOpacity=".2" /></linearGradient>
         </defs>
         <circle cx="250" cy="250" r="210" fill="url(#sphere-light)" />
-        <circle cx="250" cy="250" r="171" stroke="#b6bee5" strokeOpacity=".22" />
+        <circle cx="250" cy="250" r="171" style={{ stroke: "var(--secondary)" }} strokeOpacity=".22" />
         <ellipse cx="250" cy="250" rx="218" ry="58" stroke="url(#orbit-light)" transform="rotate(-27 250 250)" />
-        <ellipse cx="250" cy="250" rx="195" ry="75" stroke="#b3b7ef" strokeOpacity=".23" transform="rotate(65 250 250)" />
-        <g stroke="#badcff" strokeWidth=".9">
+        <ellipse cx="250" cy="250" rx="195" ry="75" style={{ stroke: "var(--secondary)" }} strokeOpacity=".23" transform="rotate(65 250 250)" />
+        <g style={{ stroke: "var(--accent-2)" }} strokeWidth=".9">
           {edges.map(({ node, other, key }) => <line key={key} x1={node.x} y1={node.y} x2={other.x} y2={other.y} opacity={Number((.18 + (node.z + 1) * .2).toFixed(3))} />)}
         </g>
-        {nodes.map((node, i) => <circle key={i} cx={node.x} cy={node.y} r={node.z > .3 ? 2.8 : 1.6} fill={i % 4 ? "#b6bee5" : "#b1acff"} opacity={Number((.25 + (node.z + 1) * .35).toFixed(3))} />)}
-        <g className={styles.signal}><circle cx="250" cy="79" r="4" fill="#dde1f3" /><circle cx="250" cy="79" r="9" stroke="#b6bee5" strokeOpacity=".4" /></g>
-        <path d="M250 22V48M250 452V478M22 250H48M452 250H478" stroke="#858cb1" strokeOpacity=".5" />
-        <circle cx="250" cy="250" r="7" fill="#e5e8f6" /><circle cx="250" cy="250" r="20" stroke="#e5e8f6" strokeOpacity=".4" />
+        {nodes.map((node, i) => <circle key={i} cx={node.x} cy={node.y} r={node.z > .3 ? 2.8 : 1.6} style={{ fill: i % 4 ? "var(--secondary)" : "var(--accent-soft)" }} opacity={Number((.25 + (node.z + 1) * .35).toFixed(3))} />)}
+        <g className={styles.signal}><circle cx="250" cy="79" r="4" style={{ fill: "var(--light)" }} /><circle cx="250" cy="79" r="9" style={{ stroke: "var(--secondary)" }} strokeOpacity=".4" /></g>
+        <path d="M250 22V48M250 452V478M22 250H48M452 250H478" style={{ stroke: "var(--n-60)" }} strokeOpacity=".5" />
+        <circle cx="250" cy="250" r="7" style={{ fill: "var(--light)" }} /><circle cx="250" cy="250" r="20" style={{ stroke: "var(--light)" }} strokeOpacity=".4" />
       </svg>
       <svg className="assembly-connections" viewBox="0 0 500 500" fill="none" aria-hidden="true">
-        <path data-pipeline-path d="M95 250H245" stroke="#b296ff" strokeWidth="1.5" />
-        <path data-pipeline-path d="M255 250H405" stroke="#b9dfff" strokeWidth="1.5" />
-        <circle data-pipeline-pulse cx="95" cy="250" r="3" fill="#dfd4ff" />
-        <circle data-pipeline-pulse cx="255" cy="250" r="3" fill="#b9dfff" />
+        <path data-pipeline-path d="M95 250H245" style={{ stroke: "var(--secondary)" }} strokeWidth="1.5" />
+        <path data-pipeline-path d="M255 250H405" style={{ stroke: "var(--accent-2)" }} strokeWidth="1.5" />
+        <circle data-pipeline-pulse cx="95" cy="250" r="3" style={{ fill: "var(--accent-pale)" }} />
+        <circle data-pipeline-pulse cx="255" cy="250" r="3" style={{ fill: "var(--accent-2)" }} />
       </svg>
       <div className={styles.tagOne} data-pipeline-node="retrieve">RETRIEVE <span>01</span></div>
       <div className={styles.tagTwo} data-pipeline-node="reason">REASON <span>02</span></div>

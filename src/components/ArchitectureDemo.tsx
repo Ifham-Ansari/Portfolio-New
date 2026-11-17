@@ -181,7 +181,7 @@ export default function ArchitectureDemo() {
   const detail: ReactNode = (() => {
     if (step < 0) return <>
       <p className={styles.lead}>Press <b>Run pipeline</b> and this panel shows what is happening inside each stage — the vector, the search scores, the retrieved passages and the exact prompt sent to the LLM.</p>
-      <p style={{ marginTop: 12, color: "#8b91ad" }}>The same flow powers EZ Qanoon in production: chunking → embeddings → semantic search → grounded generation.</p>
+      <p style={{ marginTop: 12, color: "var(--n-60)" }}>The same flow powers EZ Qanoon in production: chunking → embeddings → semantic search → grounded generation.</p>
     </>;
     if (step === 0) return <>
       <p className={styles.lead}>“{data.query}”</p>

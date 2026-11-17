@@ -1,47 +1,47 @@
-.overlay { position: fixed; inset: 0; z-index: 110; display: flex; flex-direction: column; background: #09090f; color: #f1f1fa; }
+.overlay { position: fixed; inset: 0; z-index: 110; display: flex; flex-direction: column; background: var(--primary); color: var(--light); }
 /* Keep the overlay below the case-study dialog (z-index 120) so the dialog
    opens visibly on top of the tour when the helicopter lands. */
-.topbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 14px 22px; border-bottom: 1px solid #3a3157; background: linear-gradient(180deg,#171329 0%,#0c0b14 100%); box-shadow: 0 10px 30px #00000055; }
-.topTitle { font: 12px var(--font-mono); letter-spacing: .14em; color: #c1b1ff; }
-.topTitle span { color: #767da0; }
-.hud { font: 600 12px var(--font-mono); letter-spacing: .08em; color: #fff; margin-left: auto; background: #1d1836; border: 1px solid #6b5aa8; border-radius: 999px; padding: 9px 14px; box-shadow: 0 4px 18px #00000066; }
-.alt { font: 600 11px var(--font-mono); letter-spacing: .1em; color: #f0d9a0; border: 1px solid #8a6f3a; background: #1c1608; border-radius: 999px; padding: 9px 12px; }
-.exit { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; border: 1px solid #56516e; border-radius: 10px; background: #151222; color: #e2dcff; font: 600 13px Manrope, sans-serif; transition: background .2s, border-color .2s; }
-.exit:hover { background: #2c293a; border-color: #b296ff; }
-.stage { position: relative; flex: 1; min-height: 0; overflow: hidden; background: radial-gradient(ellipse at 50% 28%, #2a2352 0%, #141126 55%, #09090f 100%); }
+.topbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 14px 22px; border-bottom: 1px solid var(--n-25); background: linear-gradient(180deg,var(--a-10) 0%,var(--n-02) 100%); box-shadow: 0 10px 30px #00000055; }
+.topTitle { font: 12px var(--font-mono); letter-spacing: .14em; color: var(--accent-soft); }
+.topTitle span { color: var(--n-52); }
+.hud { font: 600 12px var(--font-mono); letter-spacing: .08em; color: var(--light); margin-left: auto; background: var(--a-16); border: 1px solid var(--n-52); border-radius: 999px; padding: 9px 14px; box-shadow: 0 4px 18px #00000066; }
+.alt { font: 600 11px var(--font-mono); letter-spacing: .1em; color: var(--highlight-light); border: 1px solid var(--highlight-45); background: var(--highlight-12); border-radius: 999px; padding: 9px 12px; }
+.exit { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; border: 1px solid var(--n-38); border-radius: 10px; background: var(--n-06); color: var(--light); font: 600 13px Manrope, sans-serif; transition: background .2s, border-color .2s; }
+.exit:hover { background: var(--n-16); border-color: var(--hover); }
+.stage { position: relative; flex: 1; min-height: 0; overflow: hidden; background: radial-gradient(ellipse at 50% 28%, var(--a-30) 0%, var(--a-10) 55%, var(--primary) 100%); }
 .stage canvas { position: absolute; inset: 0; display: block; }
 .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 2; }
-.label { position: absolute; left: 0; top: 0; font: 600 11px var(--font-mono); letter-spacing: .08em; color: #e6e2f7; background: #12101ce8; border: 1px solid #49405e; border-radius: 6px; padding: 5px 9px; white-space: nowrap; opacity: .85; box-shadow: 0 4px 14px #00000066; }
-.label.hot { opacity: 1; color: #fff; border-color: #e8b34b; background: #241a44f0; box-shadow: 0 4px 18px #7a55e866; }
-.fallback { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; padding: 30px; background: #0b0a1acc; }
-.fallback p { max-width: 460px; color: #a5abc6; font-size: 15.5px; line-height: 1.75; }
-.fallback b { color: #eceaf8; }
+.label { position: absolute; left: 0; top: 0; font: 600 11px var(--font-mono); letter-spacing: .08em; color: var(--light); background: color-mix(in srgb, var(--n-04) 91%, transparent); border: 1px solid var(--n-30); border-radius: 6px; padding: 5px 9px; white-space: nowrap; opacity: .85; box-shadow: 0 4px 14px #00000066; }
+.label.hot { opacity: 1; color: var(--light); border-color: var(--highlight); background: color-mix(in srgb, var(--a-22) 94%, transparent); box-shadow: 0 4px 18px color-mix(in srgb, var(--secondary) 40%, transparent); }
+.fallback { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; padding: 30px; background: color-mix(in srgb, var(--a-06) 80%, transparent); }
+.fallback p { max-width: 460px; color: var(--n-76); font-size: 15.5px; line-height: 1.75; }
+.fallback b { color: var(--light); }
 /* min-height = a row with a 52px button, so buttons coming and going never resize the 3D stage above. */
-.speech { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 85px; padding: 16px 22px; border-top: 1px solid #3a3157; background: linear-gradient(180deg,#12101f 0%,#0c0b14 100%); }
-.pilot { display: grid; place-items: center; width: 46px; height: 46px; flex-shrink: 0; font-size: 24px; line-height: 1; border-radius: 50%; background: linear-gradient(135deg,#2c2145,#171329); border: 1px solid #b296ff; box-shadow: 0 0 18px #7a55e855; }
-.speech p { flex: 1; min-width: 220px; color: #e6e4f5; font-size: 16px; line-height: 1.6; }
-.sit, .land { min-height: 52px; padding: 14px 24px; border: 1px solid #b296ff; border-radius: 10px; background: linear-gradient(135deg,#3a2a63,#2c2145); color: #fff; font: 600 14.5px Manrope, sans-serif; box-shadow: 0 8px 26px #7a55e840; transition: transform .15s, box-shadow .2s, background .2s; }
-.sit:hover, .land:hover { background: linear-gradient(135deg,#4a3680,#33254f); transform: translateY(-1px); box-shadow: 0 12px 30px #7a55e866; }
-.land { border-color: #7ee2a8; background: linear-gradient(135deg,#1e4d31,#14301f); box-shadow: 0 8px 26px #2fbf7133; }
-.land:hover { background: linear-gradient(135deg,#276240,#1c4229); }
+.speech { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 85px; padding: 16px 22px; border-top: 1px solid var(--n-25); background: linear-gradient(180deg,var(--n-04) 0%,var(--n-02) 100%); }
+.pilot { display: grid; place-items: center; width: 46px; height: 46px; flex-shrink: 0; font-size: 24px; line-height: 1; border-radius: 50%; background: linear-gradient(135deg,var(--a-22),var(--a-10)); border: 1px solid var(--secondary); box-shadow: 0 0 18px color-mix(in srgb, var(--secondary) 33%, transparent); }
+.speech p { flex: 1; min-width: 220px; color: var(--light); font-size: 16px; line-height: 1.6; }
+.sit, .land { min-height: 52px; padding: 14px 24px; border: 1px solid var(--secondary); border-radius: 10px; background: linear-gradient(135deg,var(--a-30),var(--a-22)); color: var(--light); font: 600 14.5px Manrope, sans-serif; box-shadow: 0 8px 26px color-mix(in srgb, var(--secondary) 25%, transparent); transition: transform .15s, box-shadow .2s, background .2s; }
+.sit:hover, .land:hover { background: linear-gradient(135deg,var(--a-55),var(--a-30)); transform: translateY(-1px); box-shadow: 0 12px 30px color-mix(in srgb, var(--hover) 40%, transparent); }
+.land { border-color: var(--success); background: linear-gradient(135deg,var(--success-22),var(--success-12)); box-shadow: 0 8px 26px color-mix(in srgb, var(--success) 20%, transparent); }
+.land:hover { background: linear-gradient(135deg,var(--success-35),var(--success-22)); }
 /* Keyboard shortcut badge on the Land button (L lands). */
-.key { display: inline-grid; place-items: center; min-width: 24px; height: 24px; margin-left: 10px; padding: 0 6px; border: 1px solid #7ee2a8aa; border-bottom-width: 2px; border-radius: 5px; background: #0f2a1a; color: #c9f5da; font: 600 12px var(--font-mono); line-height: 1; }
-.controls { padding: 14px 22px 20px; border-top: 1px solid var(--line); background: linear-gradient(180deg,#0d0c16 0%,#0a0910 100%); display: flex; flex-direction: column; gap: 14px; }
+.key { display: inline-grid; place-items: center; min-width: 24px; height: 24px; margin-left: 10px; padding: 0 6px; border: 1px solid color-mix(in srgb, var(--success) 67%, transparent); border-bottom-width: 2px; border-radius: 5px; background: var(--success-12); color: var(--success-light); font: 600 12px var(--font-mono); line-height: 1; }
+.controls { padding: 14px 22px 20px; border-top: 1px solid var(--line); background: linear-gradient(180deg,var(--n-02) 0%,var(--primary) 100%); display: flex; flex-direction: column; gap: 14px; }
 .dpad { display: grid; grid-template-columns: repeat(4, 60px); gap: 10px; }
-.dpad button { width: 60px; height: 60px; display: grid; place-items: center; border: 1px solid #56516e; border-radius: 14px; background: linear-gradient(180deg,#1d1836,#151222); color: #e2dcff; box-shadow: 0 6px 18px #00000055; transition: transform .15s, background .2s, border-color .2s; }
-.dpad button:hover:not(:disabled) { background: linear-gradient(180deg,#2c293a,#1d1836); border-color: #b296ff; transform: translateY(-1px); }
-.hint { font: 10px var(--font-mono); letter-spacing: .1em; color: #8b91b3; }
+.dpad button { width: 60px; height: 60px; display: grid; place-items: center; border: 1px solid var(--n-38); border-radius: 14px; background: linear-gradient(180deg,var(--a-16),var(--n-06)); color: var(--light); box-shadow: 0 6px 18px #00000055; transition: transform .15s, background .2s, border-color .2s; }
+.dpad button:hover:not(:disabled) { background: linear-gradient(180deg,var(--n-16),var(--a-16)); border-color: var(--hover); transform: translateY(-1px); }
+.hint { font: 10px var(--font-mono); letter-spacing: .1em; color: var(--n-60); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.chips > span { font: 11px var(--font-mono); letter-spacing: .1em; color: #838bb0; margin-right: 4px; }
-.chip { display: inline-flex; align-items: center; gap: 9px; border: 1px solid #383349; border-radius: 999px; background: #171426; color: #c6c9de; padding: 10px 14px; min-height: 42px; font-size: 13px; transition: background .2s, border-color .2s, color .2s; }
-.chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--chip-tone, #b296ff); box-shadow: 0 0 9px var(--chip-tone, #b296ff); flex-shrink: 0; }
-.chip:hover { background: #2c293a; border-color: #b296ff; color: #fff; }
-.chip.selected { background: #2c2145; border-color: #e8b34b; color: #fff; box-shadow: 0 0 0 1px #e8b34b66, 0 6px 18px #7a55e833; }
+.chips > span { font: 11px var(--font-mono); letter-spacing: .1em; color: var(--n-60); margin-right: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 9px; border: 1px solid var(--n-20); border-radius: 999px; background: var(--n-08); color: var(--n-84); padding: 10px 14px; min-height: 42px; font-size: 13px; transition: background .2s, border-color .2s, color .2s; }
+.chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--chip-tone, var(--secondary)); box-shadow: 0 0 9px var(--chip-tone, var(--secondary)); flex-shrink: 0; }
+.chip:hover { background: var(--n-16); border-color: var(--hover); color: var(--light); }
+.chip.selected { background: var(--a-22); border-color: var(--highlight); color: var(--light); box-shadow: 0 0 0 1px color-mix(in srgb, var(--highlight) 40%, transparent), 0 6px 18px color-mix(in srgb, var(--secondary) 20%, transparent); }
 /* Lift ride overlay (underground projects): glass-metal cabin, doors, depth gauge. */
 /* Underground chamber panel. */
-.chamberKicker { font: 600 11px var(--font-mono); letter-spacing: .16em; color: #7ee2a8; background: #14301f66; border: 1px solid #2f6b47; border-radius: 999px; padding: 8px 14px; }
+.chamberKicker { font: 600 11px var(--font-mono); letter-spacing: .16em; color: var(--success); background: color-mix(in srgb, var(--success-12) 40%, transparent); border: 1px solid var(--success-35); border-radius: 999px; padding: 8px 14px; }
 .chamberTags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-.chamberTags span { border: 1px solid #383349; border-radius: 999px; padding: 8px 13px; font-size: 13px; color: #e6e4f5; background: #171426; }
+.chamberTags span { border: 1px solid var(--n-20); border-radius: 999px; padding: 8px 13px; font-size: 13px; color: var(--light); background: var(--n-08); }
 .chamberActions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 
 @media (max-width: 800px) {
@@ -60,39 +60,39 @@
 /* Route map along the bottom of the scene: a tick per pad (start in violet, projects in their tones)
    and a glowing marker for the helicopter, moved by the render loop. */
 .route { position: absolute; left: 22px; right: 22px; bottom: 16px; z-index: 3; pointer-events: none; }
-.routeTrack { position: relative; display: block; height: 4px; border-radius: 4px; background: #0c0b14b3; box-shadow: 0 0 0 1px #ffffff22, 0 4px 14px #00000055; }
-.routeTrack > i { position: absolute; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--tick-tone, #b296ff); box-shadow: 0 0 8px var(--tick-tone, #b296ff); }
-.routeTrack > i.routeStart { width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 2px; background: #b296ff; }
-.routeTrack > i.routeHere { width: 12px; height: 12px; margin: -6px 0 0 -6px; outline: 2px solid #fff; outline-offset: 2px; }
-.routeMarker { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px #e8b34b, 0 0 16px #e8b34b; transition: left .1s linear; }
+.routeTrack { position: relative; display: block; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--n-02) 70%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--light) 13%, transparent), 0 4px 14px #00000055; }
+.routeTrack > i { position: absolute; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--tick-tone, var(--secondary)); box-shadow: 0 0 8px var(--tick-tone, var(--secondary)); }
+.routeTrack > i.routeStart { width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 2px; background: var(--secondary); }
+.routeTrack > i.routeHere { width: 12px; height: 12px; margin: -6px 0 0 -6px; outline: 2px solid var(--light); outline-offset: 2px; }
+.routeMarker { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--light); box-shadow: 0 0 0 3px var(--highlight), 0 0 16px var(--highlight); transition: left .1s linear; }
 
 /* Live telemetry (ALT · km/h · next project) — a fixed width so the top bar doesn't jitter. */
 .alt { min-width: 300px; text-align: center; font-variant-numeric: tabular-nums; }
 
 .controlRow { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
 .controlRow .hint { flex: 1; min-width: 260px; line-height: 1.9; }
-.dpad button:active:not(:disabled) { background: linear-gradient(180deg,#3a2a63,#2c2145); border-color: #e8b34b; transform: translateY(1px); }
+.dpad button:active:not(:disabled) { background: linear-gradient(180deg,var(--a-30),var(--a-22)); border-color: var(--highlight); transform: translateY(1px); }
 .dpad button { touch-action: none; user-select: none; }
 
 /* Sound on/off toggle in the top bar (M). */
-.sound { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid #56516e; border-radius: 10px; background: #151222; color: #e2dcff; font: 600 13px Manrope, sans-serif; transition: background .2s, border-color .2s; }
-.sound:hover { background: #2c293a; border-color: #b296ff; }
-.sound[aria-pressed="false"] { color: #9a9fbd; }
-.sound:focus-visible, .skip:focus-visible { outline: 2px solid #d7e9ff; outline-offset: 3px; }
-.keyDark { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border: 1px solid #56516e; border-bottom-width: 2px; border-radius: 5px; background: #0c0b14; color: #c1b1ff; font: 600 11px var(--font-mono); }
+.sound { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--n-38); border-radius: 10px; background: var(--n-06); color: var(--light); font: 600 13px Manrope, sans-serif; transition: background .2s, border-color .2s; }
+.sound:hover { background: var(--n-16); border-color: var(--hover); }
+.sound[aria-pressed="false"] { color: var(--n-68); }
+.sound:focus-visible, .skip:focus-visible { outline: 2px solid var(--accent-pale); outline-offset: 3px; }
+.keyDark { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border: 1px solid var(--n-38); border-bottom-width: 2px; border-radius: 5px; background: var(--n-02); color: var(--accent-soft); font: 600 11px var(--font-mono); }
 
 /* Lift ride readout (top-left of the 3D view) while the underground scene plays. */
-.liftHud { position: absolute; top: 18px; left: 22px; z-index: 4; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 10px 12px 10px 16px; border: 1px solid #8a6f3a; border-radius: 12px; background: #0f0d18e6; box-shadow: 0 12px 30px #00000088; }
-.liftHudLabel { font: 600 11px var(--font-mono); letter-spacing: .14em; color: #e8b34b; }
-.liftHudDepth { font: 600 12px var(--font-mono); letter-spacing: .1em; color: #e6e4f5; font-variant-numeric: tabular-nums; }
-.liftHudDepth span { display: inline-block; min-width: 58px; color: #fff; }
-.skip { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 12px; border: 1px solid #56516e; border-radius: 9px; background: #1d1836; color: #e2dcff; font: 600 13px Manrope, sans-serif; }
-.skip:hover { background: #2c2145; border-color: #b296ff; }
+.liftHud { position: absolute; top: 18px; left: 22px; z-index: 4; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 10px 12px 10px 16px; border: 1px solid var(--highlight-45); border-radius: 12px; background: color-mix(in srgb, var(--n-02) 90%, transparent); box-shadow: 0 12px 30px #00000088; }
+.liftHudLabel { font: 600 11px var(--font-mono); letter-spacing: .14em; color: var(--highlight); }
+.liftHudDepth { font: 600 12px var(--font-mono); letter-spacing: .1em; color: var(--light); font-variant-numeric: tabular-nums; }
+.liftHudDepth span { display: inline-block; min-width: 58px; color: var(--light); }
+.skip { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 12px; border: 1px solid var(--n-38); border-radius: 9px; background: var(--a-16); color: var(--light); font: 600 13px Manrope, sans-serif; }
+.skip:hover { background: var(--a-22); border-color: var(--hover); }
 
 /* Underground office info card (right side, the 3D presentation stays visible on the left). */
-.chamberCard { position: absolute; top: 18px; right: 22px; max-height: calc(100% - 52px); z-index: 4; width: min(400px, calc(100% - 44px)); overflow-y: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px; border: 1px solid #3a3157; border-radius: 14px; background: linear-gradient(180deg, #171329f2, #0c0b14f2); box-shadow: 0 24px 60px #000000aa; animation: cardIn .5s cubic-bezier(.22,1,.36,1) both; }
+.chamberCard { position: absolute; top: 18px; right: 22px; max-height: calc(100% - 52px); z-index: 4; width: min(400px, calc(100% - 44px)); overflow-y: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px; border: 1px solid var(--n-25); border-radius: 14px; background: linear-gradient(180deg, color-mix(in srgb, var(--a-10) 95%, transparent), color-mix(in srgb, var(--n-02) 95%, transparent)); box-shadow: 0 24px 60px #000000aa; animation: cardIn .5s cubic-bezier(.22,1,.36,1) both; }
 .chamberCard h3 { font-size: 24px; line-height: 1.25; letter-spacing: -.02em; }
-.chamberCard p { color: #c3c7de; font-size: 15px; line-height: 1.7; }
+.chamberCard p { color: var(--n-84); font-size: 15px; line-height: 1.7; }
 .chamberCard .chamberTags { justify-content: flex-start; }
 .chamberCard .chamberActions { justify-content: flex-start; margin-top: 6px; }
 @keyframes cardIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
@@ -106,10 +106,10 @@
 @keyframes btnIn { from { opacity: 0; transform: translateY(4px); } }
 
 /* Crash: red HUD pill, a hot flash on impact, and a fade-in that hides the cut to the respawn pad. */
-.hudCrash { color: #ffd2c8; border-color: #e5533d; background: #3a1410; }
-.crashFlash { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(circle at 50% 55%, #ffd9a855 0%, #ff6a2a44 40%, #5a0f0466 100%); animation: crashFlash .8s ease-out both; }
+.hudCrash { color: var(--danger-light); border-color: var(--danger); background: var(--danger-20); }
+.crashFlash { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--danger-light) 33%, transparent) 0%, color-mix(in srgb, var(--danger) 27%, transparent) 40%, color-mix(in srgb, var(--danger-20) 40%, transparent) 100%); animation: crashFlash .8s ease-out both; }
 @keyframes crashFlash { from { opacity: 1; } to { opacity: 0; } }
-.respawnFade { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: #09090f; animation: respawnFade .7s ease-out both; }
+.respawnFade { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: var(--primary); animation: respawnFade .7s ease-out both; }
 @keyframes respawnFade { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .sit, .land { animation: none; }

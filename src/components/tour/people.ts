@@ -20,12 +20,14 @@ export type Person = {
   shinL: THREE_NS.Group; shinR: THREE_NS.Group; // knee pivots
 };
 
-export type Look = { skin: number; shirt: number; pants: number; hair: number; shoes: number; accent?: number; glasses?: boolean };
+/** Colours as hex numbers or CSS colour strings (e.g. a resolved theme colour). */
+type Paint = number | string;
+export type Look = { skin: Paint; shirt: Paint; pants: Paint; hair: Paint; shoes: Paint; accent?: Paint; glasses?: boolean };
 
 const HIP_Y = 1.0;
 
 export function makePerson(THREE: Three, look: Look): Person {
-  const mat = (color: number, roughness = 0.8) => new THREE.MeshStandardMaterial({ color, roughness, metalness: 0.05 });
+  const mat = (color: Paint, roughness = 0.8) => new THREE.MeshStandardMaterial({ color, roughness, metalness: 0.05 });
   const skin = mat(look.skin, 0.65), shirt = mat(look.shirt), pants = mat(look.pants), hair = mat(look.hair, 0.9), shoes = mat(look.shoes, 0.6);
   const shadow = <T extends THREE_NS.Object3D>(o: T) => { o.traverse(c => { (c as THREE_NS.Mesh).castShadow = true; }); return o; };
 

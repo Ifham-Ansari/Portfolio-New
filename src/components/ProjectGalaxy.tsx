@@ -6,9 +6,9 @@ import Reveal from "./Reveal";
 import { useCaseStudy } from "./CaseStudyDialog";
 import { useMotionPreference as useReducedMotion } from "./useMotionPreference";
 import { projects, type PortfolioProject } from "@/data/portfolio-projects";
+import { themeColor, toneHex, toneVar } from "./themeColors";
 import styles from "./ProjectGalaxy.module.css";
 
-const TONES = ["#c1a8ff", "#b8dfff", "#d3b5ef", "#b8c3ff", "#b1d6f9", "#a8b6ed", "#a7d3ed", "#bfbcf1", "#b4cbf3", "#d1b9f0", "#a5c0ef", "#c8b6f5", "#aecdf6"];
 const SHORT_NAMES: Record<string, string> = {
   ez_qanoon: "EZ Qanoon", iwm_crm: "IWM CRM", brandwings: "Brandwings", audifyer: "Audifyer",
   whatsapp: "WhatsApp Suite", brandwings_pos: "Brandwings POS", brandwings_crm: "Brandwings CRM", nawaya: "Nawaya",
@@ -16,7 +16,7 @@ const SHORT_NAMES: Record<string, string> = {
 };
 
 type GalaxyProject = PortfolioProject & { shortName: string; tone: string };
-const GX: GalaxyProject[] = projects.map((p, i) => ({ ...p, shortName: SHORT_NAMES[p.image] ?? p.title, tone: TONES[i] }));
+const GX: GalaxyProject[] = projects.map((p, i) => ({ ...p, shortName: SHORT_NAMES[p.image] ?? p.title, tone: toneVar(i) })); // CSS value; the 3D scene resolves it with toneHex(i)
 
 type GxApi = { zoom: (d: number) => void; reset: () => void; orbits: (on: boolean) => void; flash: () => void };
 
@@ -83,16 +83,18 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
       stage.insertBefore(renderer.domElement, stage.firstChild);
 
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x09090f, 0.0016);
+      // Colours come from the site theme (src/app/theme.css).
+      const C = (css: string) => new THREE.Color(themeColor(css));
+      scene.fog = new THREE.FogExp2(C("var(--primary)"), 0.0016);
       const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 600);
       const CAM_HOME = 56;
       camera.position.set(0, 7, CAM_HOME);
       camera.lookAt(0, 0, 0);
 
-      scene.add(new THREE.AmbientLight(0x8d94c8, 0.75));
-      const coreLight = new THREE.PointLight(0xb296ff, 2.1, 140);
+      scene.add(new THREE.AmbientLight(C("var(--n-68)"), 0.75));
+      const coreLight = new THREE.PointLight(C("var(--secondary)"), 2.1, 140);
       scene.add(coreLight);
-      const rim = new THREE.DirectionalLight(0xb9dfff, 0.55);
+      const rim = new THREE.DirectionalLight(C("var(--accent-2)"), 0.55);
       rim.position.set(-30, 40, 25);
       scene.add(rim);
 
@@ -115,15 +117,15 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
 
       const core = new THREE.Mesh(
         new THREE.SphereGeometry(3.1, 40, 40),
-        new THREE.MeshStandardMaterial({ color: 0x2c2148, emissive: 0x7a55e8, emissiveIntensity: 0.85, roughness: 0.35, metalness: 0.2 }),
+        new THREE.MeshStandardMaterial({ color: C("var(--a-22)"), emissive: C("var(--secondary)"), emissiveIntensity: 0.85, roughness: 0.35, metalness: 0.2 }),
       );
       galaxy.add(core);
-      const coreGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x9a7bff, transparent: true, opacity: 0.55, depthWrite: false }));
+      const coreGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: C("var(--secondary)"), transparent: true, opacity: 0.55, depthWrite: false }));
       coreGlow.scale.set(24, 24, 1);
       galaxy.add(coreGlow);
       const coreRing = new THREE.Mesh(
         new THREE.TorusGeometry(4.6, 0.045, 8, 90),
-        new THREE.MeshBasicMaterial({ color: 0xb9dfff, transparent: true, opacity: 0.5 }),
+        new THREE.MeshBasicMaterial({ color: C("var(--accent-2)"), transparent: true, opacity: 0.5 }),
       );
       coreRing.rotation.x = Math.PI / 2.4;
       galaxy.add(coreRing);
@@ -140,7 +142,7 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
         }
         const geo = new THREE.BufferGeometry();
         geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-        scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xaeb6e2, size: 0.85, transparent: true, opacity: 0.85, sizeAttenuation: true })));
+        scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: C("var(--n-84)"), size: 0.85, transparent: true, opacity: 0.85, sizeAttenuation: true })));
       }
 
       type Planet = { pivot: import("three").Group; holder: import("three").Group; mesh: import("three").Mesh; radius: number; size: number; speed: number; spin: number; scale: number };
@@ -151,7 +153,7 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
       GX.forEach((p, i) => {
         const radius = 12.5 + i * (25.5 / Math.max(1, GX.length - 1)); // orbits always span 12.5 → 38, however many worlds
         const size = p.featured ? 1.6 : 1.18 + (i % 3) * 0.13;
-        const tone = new THREE.Color(p.tone);
+        const tone = new THREE.Color(toneHex(i));
 
         const pts: import("three").Vector3[] = [];
         for (let s = 0; s < 140; s++) {
@@ -195,7 +197,7 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
         if (p.featured) { // a small moon marks the featured worlds
           const moon = new THREE.Mesh(
             new THREE.SphereGeometry(size * 0.3, 16, 16),
-            new THREE.MeshStandardMaterial({ color: 0xdfe4ff, emissive: 0x8d94c8, emissiveIntensity: 0.3, roughness: 0.7 }),
+            new THREE.MeshStandardMaterial({ color: C("var(--n-92)"), emissive: C("var(--n-68)"), emissiveIntensity: 0.3, roughness: 0.7 }),
           );
           moon.position.set(size * 1.9, size * 0.85, 0);
           holder.add(moon);
@@ -212,7 +214,7 @@ export default function ProjectGalaxy({ paused: sitePaused }: { paused: boolean 
 
       const selRing = new THREE.Mesh(
         new THREE.RingGeometry(1.55, 1.68, 56),
-        new THREE.MeshBasicMaterial({ color: 0xcfe9ff, transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false }),
+        new THREE.MeshBasicMaterial({ color: C("var(--accent-pale)"), transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false }),
       );
       scene.add(selRing);
 

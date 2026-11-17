@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, SkipForward, Volume2, VolumeX, X } from "lucide-react";
 import { projects } from "@/data/portfolio-projects";
+import { themeColor, toneHex, toneVar } from "./themeColors";
 import { useCaseStudy } from "./CaseStudyDialog";
 import { useMotionPreference as useReducedMotion } from "./useMotionPreference";
 import { createTourAudio, type TourAudio } from "./tour/tourAudio";
@@ -13,7 +14,6 @@ import styles from "./HelicopterTour.module.css";
 
 const SOUND_KEY = "ifham-tour-sound"; // remembers the sound on/off choice
 
-const TONES = ["#c1a8ff", "#b8dfff", "#d3b5ef", "#b8c3ff", "#b1d6f9", "#a8b6ed", "#a7d3ed", "#bfbcf1", "#b4cbf3", "#d1b9f0", "#a5c0ef", "#c8b6f5", "#aecdf6"];
 const SHORT_NAMES: Record<string, string> = {
   ez_qanoon: "EZ Qanoon", iwm_crm: "IWM CRM", brandwings: "Brandwings", audifyer: "Audifyer",
   whatsapp: "WhatsApp Suite", brandwings_pos: "Brandwings POS", brandwings_crm: "Brandwings CRM", nawaya: "Nawaya",
@@ -697,7 +697,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
         const x = padX(i);
         const y = PAD_Y[i];
         const terrain = PAD_TERRAIN[i];
-        const tone = new THREE.Color(TONES[i]);
+        const tone = new THREE.Color(toneHex(i));
 
         if (terrain === "mountain") {
           // Rocky peak with the pad in the middle of its summit; EZ Qanoon is the tallest.
@@ -745,14 +745,14 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
         });
         const frame = new THREE.Mesh(
           new THREE.PlaneGeometry(8.8, 5.3),
-          new THREE.MeshStandardMaterial({ color: 0x0c0b14, roughness: 0.9 }),
+          new THREE.MeshStandardMaterial({ color: themeColor("var(--primary)"), roughness: 0.9 }),
         );
         frame.position.set(x, boardY, -8.6);
         frame.rotation.x = -0.12;
         scene.add(frame);
         const board = new THREE.Mesh(
           new THREE.PlaneGeometry(8, 4.5),
-          new THREE.MeshBasicMaterial({ color: 0x1a1827 }),
+          new THREE.MeshBasicMaterial({ color: themeColor("var(--n-08)") }),
         );
         board.position.set(x, boardY, -8.52);
         board.rotation.x = -0.12;
@@ -775,14 +775,14 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
       // Start pad — glowing violet helipad on the ground.
       const startPad = new THREE.Mesh(
         new THREE.CylinderGeometry(5.5, 5.9, 0.6, 40),
-        new THREE.MeshStandardMaterial({ color: 0x2c2148, emissive: 0x7a55e8, emissiveIntensity: 0.7, roughness: 0.4 }),
+        new THREE.MeshStandardMaterial({ color: themeColor("var(--a-22)"), emissive: themeColor("var(--secondary)"), emissiveIntensity: 0.7, roughness: 0.4 }),
       );
       startPad.position.set(START_X, 0.3, 0);
       startPad.castShadow = true; startPad.receiveShadow = true;
       scene.add(startPad);
       const startRing = new THREE.Mesh(
         new THREE.TorusGeometry(5.6, 0.12, 8, 64),
-        new THREE.MeshBasicMaterial({ color: 0xb296ff, transparent: true, opacity: 0.9 }),
+        new THREE.MeshBasicMaterial({ color: themeColor("var(--secondary)"), transparent: true, opacity: 0.9 }),
       );
       startRing.rotation.x = Math.PI / 2;
       startRing.position.set(START_X, 0.62, 0);
@@ -1095,7 +1095,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
       };
 
       // --- Underground visit: the pilot (as a walking person), the shared office lights, scene state -------------
-      const visitor = makePerson(THREE, { skin: 0xc68a63, shirt: 0x6b4fd8, pants: 0x2a2f45, hair: 0x2b1d14, shoes: 0x16141c, accent: 0xb9dfff });
+      const visitor = makePerson(THREE, { skin: 0xc68a63, shirt: themeColor("var(--secondary)"), pants: 0x2a2f45, hair: 0x2b1d14, shoes: 0x16141c, accent: themeColor("var(--accent-2)") });
       visitor.root.visible = false;
       scene.add(visitor.root);
       const lightRig = createLightRig(THREE, scene);
@@ -1504,7 +1504,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
             <i className={styles.routeStart} style={{ left: routeLeft(START_X) }} />
             {projects.map((p, i) => (
               <i key={p.image} className={i === index && overPad ? styles.routeHere : undefined}
-                style={{ left: routeLeft(padX(i)), "--tick-tone": TONES[i] } as React.CSSProperties} />
+                style={{ left: routeLeft(padX(i)), "--tick-tone": toneVar(i) } as React.CSSProperties} />
             ))}
             <span ref={markerRef} className={styles.routeMarker} style={{ left: routeLeft(START_X) }} />
           </span>
@@ -1543,7 +1543,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
             <div className={styles.chips}>
               {projects.map((p, i) => (
                 <button key={p.image} type="button" className={styles.chip} onClick={() => openCaseStudy(p.image)}>
-                  <i style={{ background: TONES[i] }} aria-hidden="true" />{SHORT_NAMES[p.image] ?? p.title}
+                  <i style={{ background: toneVar(i) }} aria-hidden="true" />{SHORT_NAMES[p.image] ?? p.title}
                 </button>
               ))}
             </div>
@@ -1606,7 +1606,7 @@ export default function HelicopterTour({ paused: sitePaused, onClose }: { paused
               key={p.image}
               type="button"
               className={`${styles.chip} ${i === index && overPad ? styles.selected : ""}`}
-              style={{ "--chip-tone": TONES[i] } as React.CSSProperties}
+              style={{ "--chip-tone": toneVar(i) } as React.CSSProperties}
               aria-pressed={i === index && overPad}
               onClick={() => flyTo(i)}
             >

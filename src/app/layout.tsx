@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./theme.css"; // the site colours — edit this one file to re-theme everything
 import "./globals.css";
 import { introPrepaintScript } from "@/components/introConfig";
 
